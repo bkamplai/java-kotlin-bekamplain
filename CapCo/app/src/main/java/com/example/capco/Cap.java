@@ -1,18 +1,15 @@
 package com.example.capco;
 
-import android.content.ClipData;
-
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.DeserializationContext;
-import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
 import java.io.IOException;
 
-@JsonDeserialize(using = Cap.Deserializer.class)
+@JsonDeserialize(using = Cap.JsonDeserializer.class)
 public class Cap {
-    public static class Deserializer extends JsonDeserializer<Cap> {
+    public static class JsonDeserializer extends com.fasterxml.jackson.databind.JsonDeserializer<Cap> {
     //{"size":"MEDIUM","label":"Ok"}
         @Override
         public Cap deserialize(JsonParser jp, DeserializationContext context) throws IOException {

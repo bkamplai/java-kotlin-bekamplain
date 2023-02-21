@@ -1,29 +1,48 @@
 package com.example.capco;
 
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
+import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 
 import java.io.IOException;
 
-@JsonDeserialize(using = Cap.JsonDeserializer.class)
+
+@JsonDeserialize(using = Cap.Deserializer.class)
+@JsonSerialize(using = Cap.Serializer.class)
 public class Cap {
-    public static class JsonDeserializer extends com.fasterxml.jackson.databind.JsonDeserializer<Cap> {
-    //{"size":"MEDIUM","label":"Ok"}
+    public static class Deserializer extends JsonDeserializer<Cap> {
         @Override
         public Cap deserialize(JsonParser jp, DeserializationContext context) throws IOException {
-
             JsonNode node = jp.getCodec().readTree(jp);
             return new Cap(node);
         }
     }
 
-    // Size Cap.size = Size.MEDIUM;
+    // https://www.baeldung.com/jackson-object-mapper-tutorial
+    public static class Serializer extends StdSerializer<Cap> {
+        public Serializer() {
+            this(null);
+        }
+
+        public Serializer(Class<Cap> t) {
+            super(t);
+        }
+        @Override
+        public void serialize(Cap cap, JsonGenerator jsonGenerator, SerializerProvider serializer) throws IOException {
+            cap.toJson(jsonGenerator);
+        }
+    }
     public static final Size DEFAULT_SIZE = Size.MEDIUM;
+
     private static Size size = DEFAULT_SIZE;
-    private String label = DEFAULT_LABEL;
-    public static final String DEFAULT_LABEL = "";
 
     public Size getSize() {
         return size;
@@ -35,6 +54,9 @@ public class Cap {
         }
         this.size = size;
     }
+
+    public static final String DEFAULT_LABEL = "";
+    private String label = DEFAULT_LABEL;
 
     public String getLabel() {
         return label;
@@ -51,8 +73,24 @@ public class Cap {
     }
 
     public Cap(JsonNode node) {
-        this.size =  Size.valueOf(node.get("size").asText());
+        this.size = Size.valueOf(node.get("size").asText());
         this.label = node.get("label").asText();
+    }
+
+    public void toJson(JsonGenerator out) throws IOException {
+        out.writeStartObject();
+        out.writeStringField("label",getLabel());
+        out.writeStringField("size",getSize().toString());
+        out.writeEndObject();
+    }
+
+    public String toJson() {
+        ObjectMapper mapper = new ObjectMapper();
+        try {
+            return mapper.writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Cap(String label, Size size) {
@@ -61,6 +99,6 @@ public class Cap {
     }
 
     public Cap() {
-        this(DEFAULT_LABEL, DEFAULT_SIZE);
+        this(DEFAULT_LABEL,DEFAULT_SIZE);
     }
 }

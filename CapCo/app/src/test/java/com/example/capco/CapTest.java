@@ -11,6 +11,7 @@ import org.junit.Test;
 public class CapTest {
 
     Cap cap;
+
     @Before
     public void setUp() throws Exception {
         cap = new Cap();
@@ -21,23 +22,23 @@ public class CapTest {
     }
 
     @Test
-    public void getSize() {
-        assertEquals(Cap.DEFAULT_SIZE, cap.getSize());
+    public void getDefaultSize() {
+        assertEquals(Cap.DEFAULT_SIZE,cap.getSize());
     }
 
     @Test
     public void setSize() {
         cap.setSize(Size.LARGE);
-        assertEquals(Size.LARGE, cap.getSize());
+        assertEquals(Size.LARGE,cap.getSize());
     }
 
     @Test
     public void getLabel() {
-        assertEquals("", cap.getLabel());
+        assertEquals("",cap.getLabel());
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void setLabelNULL() {
+    public void setLabelNull() {
         cap.setLabel(null);
     }
 
@@ -49,7 +50,7 @@ public class CapTest {
     @Test
     public void setLabelOk() {
         cap.setLabel("Ok");
-        assertEquals("Ok", cap.getLabel());
+        assertEquals("Ok",cap.getLabel());
     }
 
     @Test
@@ -59,9 +60,20 @@ public class CapTest {
                 "    \"size\": \"LARGE\",\n" +
                 "    \"label\": \"My Label\"\n" +
                 "}";
-        cap = mapper.readValue(json, Cap.class);
+        cap = mapper.readValue(json,Cap.class);
 
-        assertEquals(Size.LARGE, cap.getSize());
-        assertEquals("My Label", cap.getLabel());
+        assertEquals(Size.LARGE,cap.getSize());
+        assertEquals("My Label",cap.getLabel());
+    }
+
+    @Test
+    public void toJSON() throws Exception {
+        cap = new Cap("My Label", Size.LARGE);
+
+        ObjectMapper mapper = new ObjectMapper();
+        String json  = mapper.writeValueAsString(cap);
+        String expect = "{\"label\":\"My Label\",\"size\":\"LARGE\"}";
+
+        assertEquals(expect,json);
     }
 }

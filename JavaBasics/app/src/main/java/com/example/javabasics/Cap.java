@@ -12,6 +12,10 @@ public class Cap implements Comparable<Cap> {
         this.label = label;
     }
 
+    public Cap(Cap copy) {
+        this(copy.threadCount, copy.size, copy.label);
+    }
+
     private int threadCount;
 
     public int getThreadCount() {
@@ -47,7 +51,8 @@ public class Cap implements Comparable<Cap> {
 
     // Size Cap.size = Size.MEDIUM;
     public static final Size DEFAULT_SIZE = Size.MEDIUM;
-    private Size size = DEFAULT_SIZE;
+    private
+    Size size = DEFAULT_SIZE;
     private String label = "";
 
     public Size getSize() {
@@ -106,5 +111,9 @@ public class Cap implements Comparable<Cap> {
         if (threadCount != cap.threadCount) return Integer.compare(threadCount, cap.threadCount);
         if (getSize() != cap.getSize()) return getSize().compareTo(cap.getSize());
         return getLabel().compareTo(cap.getLabel());
+    }
+
+    public Cap clone() {
+        return new Cap(this);
     }
 }

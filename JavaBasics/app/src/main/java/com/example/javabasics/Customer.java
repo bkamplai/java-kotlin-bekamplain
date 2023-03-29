@@ -47,7 +47,7 @@ public class Customer implements Comparable<Customer>{
         return new Customer(name, this.address);
     }
 
-    public Customer changeAdress(String address) {
+    public Customer changeAddress(String address) {
         return new Customer(this.name, address);
     }
 }

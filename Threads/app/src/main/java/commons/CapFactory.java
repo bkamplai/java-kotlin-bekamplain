@@ -9,13 +9,13 @@ class OrderCollector extends Thread {
 
     @Override
     public void run() {
-        System.out.println("OrderCollector running.");
+        System.out.println("OrderCollector " + name + " running.");
         try {
             Thread.sleep(1000);
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
-        System.out.println("OrderCollector done.");
+        System.out.println("OrderCollector " + name + " done.");
     }
 }
 

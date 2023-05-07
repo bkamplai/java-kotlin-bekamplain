@@ -6,7 +6,6 @@ import org.junit.Test
 import kotlin.math.abs
 
 class CalculateOverallGradeKtTest {
-
     @Test
     fun calculateOverallGrade() {
         var pointsReceived = 179.66;
@@ -15,6 +14,6 @@ class CalculateOverallGradeKtTest {
 
         var resultGrade = com.example.androidapp.calculateOverallGrade(pointsReceived, pointsPossible)
 
-        assert(abs(expextedGrade-resultGrade) < 1.00);
+        assert(abs(expextedGrade-resultGrade) < 0.01);
     }
 }

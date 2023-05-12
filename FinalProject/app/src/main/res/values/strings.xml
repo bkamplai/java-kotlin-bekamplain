@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Final Project</string>
+    <string name="score">Score:</string>
+    <string name="title">Fingerspelling Game</string>
+    <string name="guess_hint">Enter your guess:</string>
+    <string name="check_guess_button">Check Guess</string>
+</resources>

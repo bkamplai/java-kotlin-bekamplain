@@ -50,7 +50,7 @@ class MainActivity : AppCompatActivity() {
         guessEditText.setText("")
     }
 
-    fun checkGuess() {
+    private fun checkGuess() {
         val guess = guessEditText.text.toString().lowercase()
         val photo = fingerSpelledPhotos[currentPhotoIndex]
         if (guess == photo.first) {
